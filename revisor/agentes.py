@@ -56,6 +56,7 @@ def crear_subagentes(especialistas: list[str], modelo: str, idioma: str, esfuerz
             model=modelo,
             effort=esfuerzo,
             maxTurns=config.TURNOS_ESPECIALISTA,
+            background=False,
         )
 
     if con_web:
@@ -69,6 +70,7 @@ def crear_subagentes(especialistas: list[str], modelo: str, idioma: str, esfuerz
             model=modelo,
             effort=esfuerzo,
             maxTurns=40,
+            background=False,
         )
 
     agentes["verificador"] = AgentDefinition(
@@ -80,6 +82,7 @@ def crear_subagentes(especialistas: list[str], modelo: str, idioma: str, esfuerz
         model=modelo,
         effort=esfuerzo,
         maxTurns=config.TURNOS_ESPECIALISTA,
+        background=False,
     )
     return agentes
 

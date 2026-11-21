@@ -1,5 +1,16 @@
 # Cambios
 
+## 1.0.1 — 21-11-2026
+
+Arreglos encontrados en la primera revisión real:
+
+- El coordinador no podía entregar el informe final: la protección bloqueaba la herramienta interna
+  `StructuredOutput` del SDK. Ahora se permite, solo al coordinador.
+- Los especialistas se lanzaban en segundo plano y el coordinador no esperaba su respuesta. Ahora van en
+  primer plano (`background=False` y `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`).
+- «Conectado con la API key» se mostraba en cada turno; ahora solo una vez (la comprobación se sigue
+  haciendo siempre).
+
 ## 1.0.0 — 21-11-2026
 
 Primera versión.

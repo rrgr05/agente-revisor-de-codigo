@@ -71,6 +71,7 @@ def test_opciones_del_sdk(proyecto: Path) -> None:
     assert opts.max_budget_usd == 2.0
     assert opts.env["ANTHROPIC_API_KEY"] == "sk-prueba" and "CLAUDE_CONFIG_DIR" in opts.env
     assert opts.hooks["PreToolUse"][0].on_failure == "block"
+    assert opts.env["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] == "1"
     assert json.loads(opts.settings)["permissions"]["deny"]
 
 

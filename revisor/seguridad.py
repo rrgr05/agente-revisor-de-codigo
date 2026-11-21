@@ -49,6 +49,9 @@ TIPOS_GREP = {
     "clojure", "ocaml", "r", "julia", "zig", "objc", "twig", "ps", "fsharp", "groovy", "elm", "nim",
 }
 
+# Herramienta interna del SDK con la que el coordinador entrega el informe final (salida estructurada).
+HERRAMIENTA_INFORME = "StructuredOutput"
+
 # Opciones de la herramienta Agent que no se permiten (pueden cambiar dónde o cómo corre el subagente).
 OPCIONES_AGENT_PROHIBIDAS = ("isolation", "run_in_background", "model", "cwd")
 
@@ -291,6 +294,9 @@ def comprobar(herramienta: str, entrada: Any, raiz: Path, permitidas: list[Path]
     # 1) Herramientas.
     if herramienta in config.HERRAMIENTAS_PROHIBIDAS:
         return f"La herramienta {herramienta} no está permitida: el revisor es de solo lectura."
+
+    if herramienta == HERRAMIENTA_INFORME:
+        return None if agente is None else "Solo el coordinador entrega el informe final."
 
     if herramienta in ("Agent", "Task"):
         if agente is not None:

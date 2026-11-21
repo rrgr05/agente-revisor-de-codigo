@@ -188,6 +188,11 @@ def test_entrada_no_valida(proyecto: Path) -> None:
 # Protección: herramientas, subagentes e internet
 # ---------------------------------------------------------------------------
 
+def test_informe_final_solo_el_coordinador(proyecto: Path) -> None:
+    assert comprobar(proyecto, "StructuredOutput", {"resumen": "x"}) is None
+    assert comprobar(proyecto, "StructuredOutput", {"resumen": "x"}, agente="seguridad")
+
+
 def test_herramientas_que_cambian_bloqueadas(proyecto: Path) -> None:
     for herramienta in ("Write", "Edit", "Bash", "PowerShell", "NotebookEdit", "HerramientaRara"):
         assert comprobar(proyecto, herramienta, {"file_path": "src/app.php"}), herramienta
@@ -460,6 +465,7 @@ def test_subagentes_son_de_solo_lectura() -> None:
     assert set(subagentes["investigador"].tools) == set(config.HERRAMIENTAS_WEB)
     assert not set(subagentes["seguridad"].tools) & set(config.HERRAMIENTAS_WEB)
     assert "investigador" not in agentes.crear_subagentes(["seguridad"], "m", "es", "high", False)
+    assert all(d.background is False for d in subagentes.values())  # en primer plano
 
 
 def test_instrucciones_del_coordinador() -> None:

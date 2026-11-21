@@ -153,6 +153,8 @@ def opciones(raiz: Path, especialistas: list[str], modelo: str, modelo_especiali
             # Configuración aislada: así no se usa la sesión iniciada de Claude (suscripción) aunque exista
             # en el equipo, y no se cargan ajustes personales.
             "CLAUDE_CONFIG_DIR": str(CONFIG_AISLADA),
+            # Subagentes en primer plano: el coordinador espera su respuesta y el programa la recoge.
+            "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS": "1",
         },
     )
 
@@ -197,8 +199,9 @@ async def revisar(raiz: Path, encargo: str, especialistas: list[str], modelo: st
                 # 1) Al empezar: comprobar credencial, proveedor y herramientas. Nada antes de esto.
                 if isinstance(mensaje, SystemMessage) and mensaje.subtype == "init":
                     comprobar_inicio(mensaje.data)
+                    if not verificado:
+                        mostrar(f"✔ Conectado con la API key · modelo {mensaje.data.get('model', modelo)}")
                     verificado = True
-                    mostrar(f"✔ Conectado con la API key · modelo {mensaje.data.get('model', modelo)}")
                     continue
                 if not verificado and not isinstance(mensaje, SystemMessage):
                     raise CredencialIncorrecta("La sesión empezó sin el mensaje de inicio; no se puede "
@@ -238,11 +241,12 @@ async def revisar(raiz: Path, encargo: str, especialistas: list[str], modelo: st
                     for bloque in mensaje.content:
                         if isinstance(bloque, ToolResultBlock) and bloque.tool_use_id in pendientes:
                             nombre = pendientes.pop(bloque.tool_use_id)
-                            if bloque.is_error:
-                                mostrar(f"✖ «{nombre}» no se pudo lanzar o falló")
+                            texto = texto_resultado(bloque.content)
+                            if bloque.is_error or texto.startswith("Async agent launched"):
+                                mostrar(f"✖ «{nombre}» no se pudo lanzar o no respondió a tiempo")
                                 continue
                             resultado.lanzados.append(nombre)
-                            resultado.respuestas.append((nombre, texto_resultado(bloque.content)))
+                            resultado.respuestas.append((nombre, texto))
                             mostrar(f"✔ «{nombre}» ha terminado")
                     continue
 

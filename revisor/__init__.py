@@ -7,4 +7,4 @@ problemas de seguridad, malas prácticas y código ineficiente, SIN cambiar nada
 Usa el Claude Agent SDK con una API key de Anthropic.
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
