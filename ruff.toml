@@ -1,0 +1,8 @@
+# Configuración del analizador ruff: python -m ruff check revisar.py revisor tests
+target-version = "py310"
+line-length = 125
+
+[lint]
+select = ["E", "F", "W", "B", "UP"]
+# UP009: se deja la cabecera «# -*- coding: utf-8 -*-» a propósito (archivos con tildes).
+ignore = ["UP009"]

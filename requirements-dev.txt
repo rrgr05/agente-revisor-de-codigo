@@ -1,0 +1,4 @@
+# Para desarrollar: pruebas (python -m pytest -q) y analizador (python -m ruff check revisar.py revisor tests; ver ruff.toml)
+-r requirements.txt
+pytest>=8
+ruff>=0.8

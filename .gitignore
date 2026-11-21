@@ -1,0 +1,28 @@
+# Entorno de Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Configuración aislada de Claude Code que crea el agente (sesiones con el código leído, cachés)
+.estado/
+
+# Ajustes locales de editores y de Claude Code
+.claude/settings.local.json
+.idea/
+.vscode/
+
+# Secretos (nunca subirlos)
+.env
+.env.*
+!.env.example
+
+# Informes generados al probar el agente sobre sí mismo
+docs/revisiones/
+
+# Sistema
+.DS_Store
+Thumbs.db
